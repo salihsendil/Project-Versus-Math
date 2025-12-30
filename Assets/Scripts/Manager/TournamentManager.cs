@@ -1,16 +1,27 @@
+using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class TournamentManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    [Inject] private GameConfigSO gameConfig;
+    [Inject] private ParticipantSO participantData;
+
+    ////PlayerSize
+    //private int playerSize = 20;
+    //private List<string> preliminaryList = new();
+
+    private void GetPreliminaryMatchups()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    private void CreateMatchups()
     {
-        
+
     }
+
+
+
 }

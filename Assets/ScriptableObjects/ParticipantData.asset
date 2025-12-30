@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4e8db0701adfc848a74fbb74c8bb9c9, type: 3}
+  m_Name: ParticipantData
+  m_EditorClassIdentifier: 
+  DefaultNames:
+  - "H\u0131zl\u0131 Soru"
+  - "Zeka K\xFCp\xFC"
+  - "Atom Kar\u0131nca"
+  - "Matematik B\xFCk\xFCc\xFC"
+  - Gizemli Beyin
+  - "S\xFCper Bilgin"
+  - "Y\u0131ld\u0131r\u0131m Parmak"
+  - "Bilge Bayku\u015F"
+  - "F\u0131rt\u0131na Zeka"
+  - "Sanal Sava\u015F\xE7\u0131"
+  - "Rakam Avc\u0131s\u0131"
+  - Turbo Zihin
+  - Gece Kurdu
+  - "Demir Mant\u0131k"
+  - "U\xE7an Soru"
+  - Piksel Kahraman
+  - "Sonsuz D\xF6ng\xFC"
+  - Keskin Zeka
+  - Matematik Ejderi
+  - "Siber Y\u0131ld\u0131z"
+  - "Zihin F\u0131rt\u0131nas\u0131"
+  - "I\u015F\u0131k H\u0131z\u0131"
+  - "Kod Ad\u0131 Zeka"
+  - "B\xFCy\xFCk Finalist"
+  - "Soru Canavar\u0131"
+  - Efsane Oyuncu
+  - "G\xF6lge Zihin"
+  - "H\u0131zl\u0131 Karar"
+  - Zeki Panda
+  - "S\xFCper Mant\u0131k"
+  - Roket Zihin
+  - Bilinmeyen Denklem
+  - "Zeka Avc\u0131s\u0131"
+  - "\xC7\u0131lg\u0131n Profes\xF6r"
+  - "Matematik Ustas\u0131"
+  - "Gizli \u015Eampiyon"
+  - "Ak\u0131ll\u0131 Kaplan"
+  - "Bilgi Kartal\u0131"
+  - "H\u0131zl\u0131 Cevap"
+  - "Dahi \xC7ocuk"
+  - Soru Dedektifi
+  - "Zihin Ustas\u0131"
+  - Sanal Deha
+  - "Y\u0131ld\u0131z Zeka"
+  - "Soru Sihirbaz\u0131"
+  - "Mant\u0131k Kalesi"
+  - Zeka Dalga
+  - "H\u0131zl\u0131 D\xFC\u015F\xFCn\xFCr"
+  - "Son \u015Eampiyon"
+  - "Soru Ka\u015Fifi"
+  FileName: Data/PlayerNames.txt
