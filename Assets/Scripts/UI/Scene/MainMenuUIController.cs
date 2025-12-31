@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +7,7 @@ using Zenject;
 public class MainMenuUIController : MonoBehaviour
 {
     //References
+    [Inject] private SignalBus signalBus;
     [Inject] private GameConfigSO gameConfig;
     [Inject] private SceneService sceneService;
 
@@ -94,9 +96,11 @@ public class MainMenuUIController : MonoBehaviour
     }
     #endregion
 
-    public void OnStartButtonClicked()
+    #region StartButton
+    public void StartButton()
     {
-        //sceneService.LoadScene(ScenesEnum.LobbyScene);
+        signalBus.Fire<LoadLobbyRequest>();
+        sceneService.LoadSceneWithLoading(ScenesEnum.LobbyScene);
     }
-
+    #endregion
 }

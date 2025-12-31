@@ -75,6 +75,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneService: {fileID: 6726815917320310694, guid: 41f76f2bbf82c734b9fcb87b3e582def, type: 3}
+  participantsSO: {fileID: 11400000, guid: db418cecb87182245a9c21c586e88e13, type: 2}
   gameConfigSO: {fileID: 11400000, guid: cd6f7477f7a2661468e179ae0741f6db, type: 2}
   tournamentInstaller: {fileID: 984337708133276885, guid: c620672a6b2f96a4096a2adb8fb4af0d, type: 3}
-  tournamentData: {fileID: 11400000, guid: db418cecb87182245a9c21c586e88e13, type: 2}
+  loadingScreen: {fileID: 535719360494735972, guid: f670e5a337e27a94aa6c8887d509aceb, type: 3}

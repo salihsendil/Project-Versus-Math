@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-[System.Serializable]
+[Serializable]
 public struct ParticipantData
 {
     public string ParticipantName;
@@ -13,25 +14,36 @@ public struct ParticipantData
     }
 }
 
-public class TournamentInstaller : MonoBehaviour
+public class TournamentInstaller : MonoBehaviour, IInitializable, IDisposable
 {
     //Data
+    [Inject] private SignalBus signalBus;
     [Inject] private GameConfigSO gameConfig;
     [Inject] private ParticipantSO participantData;
 
     //List
-    [SerializeField] private List<ParticipantData> participants = new();
+    private List<ParticipantData> participants = new();
 
-    private void SetTournamentSize(int size)
+
+    public List<ParticipantData> Participants => participants;
+
+    public void Initialize()
     {
-        gameConfig.TournamentSize = size;
+        signalBus.Subscribe<LoadLobbyRequest>(SetParticipantsData);
+    }
+
+    public void Dispose()
+    {
+        signalBus.Unsubscribe<LoadLobbyRequest>(SetParticipantsData);
     }
 
     private void SetParticipantsData()
     {
+        participants.Clear();
+
         while (participants.Count < gameConfig.TournamentSize)
         {
-            int random = Random.Range(0, participantData.DefaultNames.Count);
+            int random = UnityEngine.Random.Range(0, participantData.DefaultNames.Count);
             ParticipantData participant = new(participantData.DefaultNames[random]);
 
             if (!participants.Contains(participant))
