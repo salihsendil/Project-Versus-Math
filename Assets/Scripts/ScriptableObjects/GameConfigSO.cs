@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New GameConfigSO", menuName = "Scriptable Objects/New GameConfigSO")]

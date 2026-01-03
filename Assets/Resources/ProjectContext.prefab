@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2313851181393060195}
   - component: {fileID: 1999942244256018584}
-  - component: {fileID: 406596678634407480}
+  - component: {fileID: -2632266814813228006}
   m_Layer: 0
   m_Name: ProjectContext
   m_TagString: Untagged
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers: []
   _monoInstallers:
-  - {fileID: 406596678634407480}
+  - {fileID: -2632266814813228006}
   _installerPrefabs: []
   _parentNewObjectsUnderContext: 1
   _editorReflectionBakingCoverageMode: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
       _missingHandlerDefaultResponse: 2
       _requireStrictUnsubscribe: 0
       _defaultAsyncTickPriority: 1
---- !u!114 &406596678634407480
+--- !u!114 &-2632266814813228006
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74,8 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92b581c55dcc2d2429705ddc7206885d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneService: {fileID: 6726815917320310694, guid: 41f76f2bbf82c734b9fcb87b3e582def, type: 3}
-  participantsSO: {fileID: 11400000, guid: db418cecb87182245a9c21c586e88e13, type: 2}
   gameConfigSO: {fileID: 11400000, guid: cd6f7477f7a2661468e179ae0741f6db, type: 2}
-  tournamentInstaller: {fileID: 984337708133276885, guid: c620672a6b2f96a4096a2adb8fb4af0d, type: 3}
-  loadingScreen: {fileID: 535719360494735972, guid: f670e5a337e27a94aa6c8887d509aceb, type: 3}
+  participantSO: {fileID: 11400000, guid: db418cecb87182245a9c21c586e88e13, type: 2}
+  sceneServicePrefab: {fileID: 6726815917320310694, guid: 41f76f2bbf82c734b9fcb87b3e582def, type: 3}
+  loadingCanvasPrefab: {fileID: 535719360494735972, guid: f670e5a337e27a94aa6c8887d509aceb, type: 3}

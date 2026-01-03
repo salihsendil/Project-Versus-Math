@@ -3,35 +3,40 @@ using Zenject;
 
 public class ProjectInstaller : MonoInstaller
 {
-    [SerializeField] private SceneService sceneService;
-    [SerializeField] private ParticipantSO participantsSO;
     [SerializeField] private GameConfigSO gameConfigSO;
-    [SerializeField] private TournamentInstaller tournamentInstaller;
-    [SerializeField] private CanvasGroup loadingScreen;
+    [SerializeField] private ParticipantSO participantSO;
+    [SerializeField] private SceneService sceneServicePrefab;
+    [SerializeField] private CanvasGroup loadingCanvasPrefab;
 
     public override void InstallBindings()
     {
-        Container.Bind<CanvasGroup>()
-            .FromComponentInNewPrefab(loadingScreen)
-            .AsSingle()
-            .NonLazy();
-
         SignalBusInstaller.Install(Container);
-        Container.DeclareSignal<LoadGameRequest>();
-        Container.DeclareSignal<LoadLobbyRequest>();
-        Container.DeclareSignal<LoadMainMenuRequest>();
 
-        Container.BindInstance(participantsSO).AsSingle();
-        Container.BindInstance(gameConfigSO).AsSingle();
+        ScriptableObjectBinding();
+        PrefabBindings();
+        SignalBusBindings();
+        InterfaceBindings();
+    }
 
-        Container.BindInterfacesAndSelfTo<SceneService>()
-            .FromInstance(sceneService)
-            .AsSingle();
-        Container.QueueForInject(sceneService);
+    private void ScriptableObjectBinding()
+    {
+        Container.BindInstance(gameConfigSO).AsSingle().NonLazy();
+        Container.BindInstance(participantSO).AsSingle().NonLazy();
+    }
 
-        Container.BindInterfacesAndSelfTo<TournamentInstaller>()
-            .FromComponentInNewPrefab(tournamentInstaller)
-            .AsSingle()
-            .NonLazy();
+    private void PrefabBindings()
+    {
+        Container.Bind<SceneService>().FromComponentInNewPrefab(sceneServicePrefab).AsSingle().NonLazy();
+        Container.Bind<CanvasGroup>().FromComponentInNewPrefab(loadingCanvasPrefab).AsSingle().NonLazy();
+    }
+
+    private void InterfaceBindings()
+    {
+        Container.BindInterfacesAndSelfTo<TournamentInstaller>().AsSingle();
+    }
+
+    private void SignalBusBindings()
+    {
+        Container.DeclareSignal<LobbySetupRequestedSignal>();
     }
 }
