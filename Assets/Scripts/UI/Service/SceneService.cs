@@ -23,7 +23,7 @@ public class SceneService : MonoBehaviour, IInitializable
         loadingCanvasGroup.blocksRaycasts = false;
     }
 
-    public async void LoadSceneWithLoading(ScenesEnum sceneName, float duration = 2f)
+    public async void LoadSceneWithLoading(ScenesEnum sceneName, float duration = 1.5f)
     {
         loadingCanvasGroup.gameObject.SetActive(true);
         await loadingCanvasGroup.DOFade(1, 0.5f).AsyncWaitForCompletion();
@@ -41,6 +41,26 @@ public class SceneService : MonoBehaviour, IInitializable
         await loadingCanvasGroup.DOFade(0, 0.5f).AsyncWaitForCompletion();
         loadingCanvasGroup.gameObject.SetActive(false);
     }
+
+    public async void FadeToTournamentEnd(System.Action onMidFade, float fadeDuration = 0.5f)
+    {
+        loadingCanvasGroup.gameObject.SetActive(true);
+        loadingCanvasGroup.blocksRaycasts = true;
+
+        await loadingCanvasGroup
+            .DOFade(1f, fadeDuration)
+            .AsyncWaitForCompletion();
+
+        onMidFade?.Invoke();
+
+        await loadingCanvasGroup
+            .DOFade(0f, fadeDuration)
+            .AsyncWaitForCompletion();
+
+        loadingCanvasGroup.blocksRaycasts = false;
+        loadingCanvasGroup.gameObject.SetActive(false);
+    }
+
 
     public void QuitGame()
     {

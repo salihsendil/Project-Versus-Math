@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41b7c870155325e4a99f92815455dd09, type: 3}
   m_Name: GameConfigSO
   m_EditorClassIdentifier: 
-  TournamentSize: 8
+  TournamentSize: 12
   MinNumberLimit: 0
   MaxNumberLimit: 10
-  QuestionCountPerRound: 10
-  HasAllowedAddition: 0
-  HasAllowedSubtraction: 1
+  QuestionCountPerRound: 3
+  HasAllowedAddition: 1
+  HasAllowedSubtraction: 0
   HasAllowedMultiplication: 1
-  HasAllowedDivision: 1
+  HasAllowedDivision: 0

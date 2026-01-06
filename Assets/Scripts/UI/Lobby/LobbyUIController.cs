@@ -7,6 +7,8 @@ public class LobbyUIController : MonoBehaviour
 {
     //References
     [Inject] private TournamentInstaller tournamentInstaller;
+    [Inject] private SignalBus signalBus;
+    [Inject] private SceneService sceneService;
 
     [Header("Entries")]
     [SerializeField] private List<PlayerLobbyEntry> entries = new();
@@ -20,28 +22,24 @@ public class LobbyUIController : MonoBehaviour
         SetLobbyEntries(tournamentInstaller.Participants);
     }
 
-    private void SetLobbyEntries(List<ParticipantData> participants)
+    private void SetLobbyEntries(List<PlayerRoundData> participants)
     {
         for (int i = 0; i < participants.Count; i++)
         {
             entries[i].SetEntryActive(true);
             entries[i].SetText(participants[i].Name);
         }
-
-
-        //tournamentinstaller turnuva kurar, eþleþmeleri ayarlar kullanýcýlarýn isimlerini random setler
-        //roundmanager oyunu ayarlar, kullanýcýlarý bilir, bitme durumunu kontrol eder
-        //playerstate roundmanager içinde olur duruma göre kontrol edilir.
     }
 
     public void OnStartButtonClicked()
     {
-
+        signalBus.Fire(new TournamentSetupRequestedSignal());
+        sceneService.LoadSceneWithLoading(ScenesEnum.Game);
     }
 
     public void OnMainMenuButtonClicked()
     {
-
+        sceneService.LoadSceneWithLoading(ScenesEnum.MainMenu);
     }
 
 }

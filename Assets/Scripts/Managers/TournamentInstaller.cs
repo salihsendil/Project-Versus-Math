@@ -4,27 +4,10 @@ using UnityEngine;
 using Zenject;
 
 [Serializable]
-public struct ParticipantData
-{
-    public string Name;
-
-    public ParticipantData(string name)
-    {
-        Name = name;
-    }
-}
-
-[Serializable]
 public struct MatchupData
 {
-    public ParticipantData playerOne;
-    public ParticipantData playerTwo;
-
-    public MatchupData(ParticipantData playerOne, ParticipantData playerTwo)
-    {
-        this.playerOne = playerOne;
-        this.playerTwo = playerTwo;
-    }
+    public PlayerRoundData playerOne;
+    public PlayerRoundData playerTwo;
 }
 
 public class TournamentInstaller : IInitializable, IDisposable
@@ -35,27 +18,28 @@ public class TournamentInstaller : IInitializable, IDisposable
     [Inject] private ParticipantSO participantSO;
 
     //Participants
-    private List<ParticipantData> participants = new();
-    //private List<ParticipantData> testParticipants = new();
-    private List<ParticipantData> byeParticipants = new();
-
+    private List<PlayerRoundData> participants = new();
+    private List<PlayerRoundData> byeParticipants = new();
 
     //MatchUps
     private Queue<MatchupData> matchups = new();
 
     //Getters
-    public List<ParticipantData> Participants => participants;
-    public Queue<MatchupData> Matchups => matchups;
+    public List<PlayerRoundData> Participants => participants;
 
 
     public void Initialize()
     {
         signalBus.Subscribe<LobbySetupRequestedSignal>(SetParticipantsData);
+        signalBus.Subscribe<TournamentSetupRequestedSignal>(StartTournament);
+        signalBus.Subscribe<RoundCompletedSignal>(AddPlayerToNextRound);
     }
 
     public void Dispose()
     {
         signalBus.Unsubscribe<LobbySetupRequestedSignal>(SetParticipantsData);
+        signalBus.Unsubscribe<TournamentSetupRequestedSignal>(StartTournament);
+        signalBus.Unsubscribe<RoundCompletedSignal>(AddPlayerToNextRound);
     }
 
     private void SetParticipantsData()
@@ -64,19 +48,18 @@ public class TournamentInstaller : IInitializable, IDisposable
 
         int tournamentSize = gameConfigSO.TournamentSize;
 
-        Shuffle(participantSO.DefaultNames);
+        HelperUtilities.Shuffle(participantSO.DefaultNames);
 
         for (int i = 0; i < tournamentSize; i++)
         {
-            participants.Add(new ParticipantData(participantSO.DefaultNames[i]));
+            participants.Add(new PlayerRoundData(i, participantSO.DefaultNames[i], 0, false));
         }
-
-        StartTournament();
-
     }
 
     private void StartTournament()
     {
+        byeParticipants.Clear();
+
         if (!IsPowerOfTwo(participants.Count))
         {
             int nextPower = NextPowerOfTwo(participants.Count);
@@ -85,47 +68,76 @@ public class TournamentInstaller : IInitializable, IDisposable
             for (int i = 0; i < byeParticipantsCount; i++)
             {
                 int random = UnityEngine.Random.Range(0, participants.Count);
-                byeParticipants.Add(new ParticipantData(participants[i].Name));
+                byeParticipants.Add(participants[random]);
                 participants.RemoveAt(random);
             }
             Debug.Log($"Ön eleme oynamayacak oyuncu sayýsý {byeParticipantsCount}.");
         }
 
-        CreateRoundMatchup(participants);
+        CreateRoundMatchup();
     }
 
-    private void CreateRoundMatchup(List<ParticipantData> participants)
+    private void CreateRoundMatchup()
     {
         matchups.Clear();
         Debug.Log("Eþleþmeler: ");
 
-        while (participants.Count > 0)
+        while (participants.Count > 1)
         {
+            MatchupData matchup = new();
+
             int randomP1 = UnityEngine.Random.Range(0, participants.Count);
-            ParticipantData p1 = new(participants[randomP1].Name);
+            matchup.playerOne = participants[randomP1];
             participants.RemoveAt(randomP1);
 
             int randomP2 = UnityEngine.Random.Range(0, participants.Count);
-            ParticipantData p2 = new(participants[randomP2].Name);
+            matchup.playerTwo = participants[randomP2];
             participants.RemoveAt(randomP2);
 
-            MatchupData matchup = new(p1, p2);
             matchups.Enqueue(matchup);
 
             Debug.Log($"Eþleþme: {matchup.playerOne.Name} - {matchup.playerTwo.Name}.");
         }
     }
 
+    private void AddPlayerToNextRound(RoundCompletedSignal signal)
+    {
+        participants.Add(signal.Player);
+        EvaluateTournamentProgress();
+    }
+
+    private void EvaluateTournamentProgress()
+    {
+        if (matchups.Count <= 0 && participants.Count == 1)
+        {
+            signalBus.Fire(new TournamentCompletedSignal(participants[0].Name));
+        }
+
+        if (matchups.Count <= 0)
+        {
+            if (byeParticipants.Count > 0)
+            {
+                foreach (var player in byeParticipants)
+                {
+                    participants.Add(player);
+                }
+                byeParticipants.Clear();
+            }
+        }
+        CreateRoundMatchup();
+    }
+
+    public MatchupData GetNextMatch()
+    {
+        return matchups.Dequeue();
+    }
+
+    public MatchupData ShowNextMatch()
+    {
+        return matchups.Peek();
+    }
 
     #region Helpers
-    public static void Shuffle<T>(List<T> list)
-    {
-        for (int i = list.Count - 1; i > 0; i--)
-        {
-            int randomIndex = UnityEngine.Random.Range(0, i + 1);
-            (list[i], list[randomIndex]) = (list[randomIndex], list[i]);
-        }
-    }
 
     public bool IsPowerOfTwo(int n)
     {

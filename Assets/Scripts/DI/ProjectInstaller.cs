@@ -38,5 +38,8 @@ public class ProjectInstaller : MonoInstaller
     private void SignalBusBindings()
     {
         Container.DeclareSignal<LobbySetupRequestedSignal>();
+        Container.DeclareSignal<TournamentSetupRequestedSignal>();
+        Container.DeclareSignal<RoundCompletedSignal>();
+        Container.DeclareSignal<TournamentCompletedSignal>();
     }
 }
