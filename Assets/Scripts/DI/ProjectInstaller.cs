@@ -41,5 +41,6 @@ public class ProjectInstaller : MonoInstaller
         Container.DeclareSignal<TournamentSetupRequestedSignal>();
         Container.DeclareSignal<RoundCompletedSignal>();
         Container.DeclareSignal<TournamentCompletedSignal>();
+        Container.DeclareSignal<TournamentProgressedSignal>();
     }
 }

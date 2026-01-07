@@ -17,7 +17,7 @@ public class GameUIController : MonoBehaviour
         signalBus.Subscribe<RoundDataReadySignal>(OnRoundDataReady);
         signalBus.Subscribe<PlayerAnswerSubmitted>(OnPlayerAnswerSubmitted);
         signalBus.Subscribe<AnswerEvaluationResultSignal>(OnAnswerEvaluationResult);
-        signalBus.Subscribe<RoundCompletedSignal>(OnRoundCompleted);
+        signalBus.Subscribe<TournamentProgressedSignal>(OnRoundCompleted);
         signalBus.Subscribe<NextRoundRequestSignal>(OnNextRoundRequest);
         signalBus.Subscribe<TournamentCompletedSignal>(OnTournamentCompleted);
     }
@@ -28,7 +28,7 @@ public class GameUIController : MonoBehaviour
         signalBus.Unsubscribe<RoundDataReadySignal>(OnRoundDataReady);
         signalBus.Unsubscribe<PlayerAnswerSubmitted>(OnPlayerAnswerSubmitted);
         signalBus.Unsubscribe<AnswerEvaluationResultSignal>(OnAnswerEvaluationResult);
-        signalBus.Unsubscribe<RoundCompletedSignal>(OnRoundCompleted);
+        signalBus.Unsubscribe<TournamentProgressedSignal>(OnRoundCompleted);
         signalBus.Unsubscribe<NextRoundRequestSignal>(OnNextRoundRequest);
         signalBus.Unsubscribe<TournamentCompletedSignal>(OnTournamentCompleted);
     }
@@ -54,11 +54,11 @@ public class GameUIController : MonoBehaviour
         gameplayUI.FinalizePlayersButtons(signal.Player, signal.Answer, signal.IsCorrect);
     }
 
-    private void OnRoundCompleted(RoundCompletedSignal signal)
+    private void OnRoundCompleted(TournamentProgressedSignal signal)
     {
         gameplayUI.SetVisibility(false);
         resultUI.SetVisibility(true);
-        resultUI.SetScreen(signal.Player.Name);
+        resultUI.SetScreen(signal.PlayerName);
     }
 
     private void OnNextRoundRequest()
@@ -70,6 +70,7 @@ public class GameUIController : MonoBehaviour
     {
         sceneService.FadeToTournamentEnd(() =>
         {
+            gameplayUI.SetVisibility(false);
             resultUI.SetVisibility(false);
 
             tournamentEndUI.SetScreen(signal.WinnerName);

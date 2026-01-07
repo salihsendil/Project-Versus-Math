@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System;
-using UnityEngine;
 using Zenject;
 
 [Serializable]
@@ -71,7 +70,6 @@ public class TournamentInstaller : IInitializable, IDisposable
                 byeParticipants.Add(participants[random]);
                 participants.RemoveAt(random);
             }
-            Debug.Log($"Ön eleme oynamayacak oyuncu sayýsý {byeParticipantsCount}.");
         }
 
         CreateRoundMatchup();
@@ -80,7 +78,6 @@ public class TournamentInstaller : IInitializable, IDisposable
     private void CreateRoundMatchup()
     {
         matchups.Clear();
-        Debug.Log("Eþleþmeler: ");
 
         while (participants.Count > 1)
         {
@@ -95,35 +92,41 @@ public class TournamentInstaller : IInitializable, IDisposable
             participants.RemoveAt(randomP2);
 
             matchups.Enqueue(matchup);
-
-            Debug.Log($"Eþleþme: {matchup.playerOne.Name} - {matchup.playerTwo.Name}.");
         }
     }
 
     private void AddPlayerToNextRound(RoundCompletedSignal signal)
     {
         participants.Add(signal.Player);
-        EvaluateTournamentProgress();
+
+        if (matchups.Count <= 0)
+        {
+            EvaluateTournamentProgress();
+        }
+
+        if (matchups.Count <= 0 && participants.Count == 1) return;
+
+        signalBus.Fire(new TournamentProgressedSignal(signal.Player.Name));
     }
 
     private void EvaluateTournamentProgress()
     {
-        if (matchups.Count <= 0 && participants.Count == 1)
+        if (byeParticipants.Count > 0)
         {
-            signalBus.Fire(new TournamentCompletedSignal(participants[0].Name));
+            foreach (var p in byeParticipants)
+            {
+                participants.Add(p);
+            }
+
+            byeParticipants.Clear();
         }
 
-        if (matchups.Count <= 0)
+        else if (participants.Count == 1)
         {
-            if (byeParticipants.Count > 0)
-            {
-                foreach (var player in byeParticipants)
-                {
-                    participants.Add(player);
-                }
-                byeParticipants.Clear();
-            }
+            signalBus.Fire(new TournamentCompletedSignal(participants[0].Name));
+            return;
         }
+
         CreateRoundMatchup();
     }
 

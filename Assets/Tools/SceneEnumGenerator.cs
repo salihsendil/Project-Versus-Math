@@ -6,7 +6,7 @@ using System.Linq;
 public static class SceneEnumGenerator
 {
     private const string EnumName = "ScenesEnum";
-    private const string FilePath = "Assets/Scripts/UI/Enums/ScenesEnum.cs";
+    private const string FilePath = "Assets/Scripts/Enums/ScenesEnum.cs";
 
     [MenuItem("Tools/Generate Scenes Enum")]
     public static void Generate()

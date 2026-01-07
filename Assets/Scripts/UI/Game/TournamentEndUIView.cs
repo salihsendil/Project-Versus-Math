@@ -5,7 +5,6 @@ using Zenject;
 
 public class TournamentEndUIView : MonoBehaviour
 {
-    [Inject] private SignalBus signalBus;
     [Inject] private SceneService sceneService;
 
     [SerializeField] private TMP_Text playerName;

@@ -16,6 +16,11 @@ public class MainMenuUIController : MonoBehaviour
     [SerializeField] private Button sizeRemoveButton;
     [SerializeField] private Button sizeAddButton;
 
+    [Header("Question Count")]
+    [SerializeField] private TMP_Text questionCountText;
+    [SerializeField] private Button questionCountRemoveButton;
+    [SerializeField] private Button questionCountAddButton;
+
     [Header("MinLimit")]
     [SerializeField] private TMP_Text minLimitText;
     [SerializeField] private Button minLimitRemoveButton;
@@ -45,6 +50,7 @@ public class MainMenuUIController : MonoBehaviour
     private void Awake()
     {
         sizeText.text = gameConfig.TournamentSize.ToString();
+        questionCountText.text = gameConfig.QuestionCountPerRound.ToString();
         minLimitText.text = gameConfig.MinNumberLimit.ToString();
         maxLimitText.text = gameConfig.MaxNumberLimit.ToString();
 
@@ -62,6 +68,12 @@ public class MainMenuUIController : MonoBehaviour
         sizeText.text = gameConfig.TournamentSize.ToString();
     }
 
+    public void ChangeSetQuestionCount(int value)
+    {
+        gameConfig.QuestionCountPerRound += value;
+        gameConfig.QuestionCountPerRound = Mathf.Clamp(gameConfig.QuestionCountPerRound, 1, 20);
+        questionCountText.text = gameConfig.QuestionCountPerRound.ToString();
+    }
 
     public void SetMinLimit(int value) => ChangeSetLimit(0, value);
     public void SetMaxLimit(int value) => ChangeSetLimit(1, value);
@@ -111,7 +123,6 @@ public class MainMenuUIController : MonoBehaviour
     }
     public void SetOperationSelection(OperationsSelectionChangedSignal signal)
     {
-
         if (!signal.isAllowed && GetAllowedOperationCount() <= 1)
         {
             GetToggleByOperation(signal.operation).SetButtonImage(true);
@@ -142,6 +153,7 @@ public class MainMenuUIController : MonoBehaviour
         signalBus.Fire(new LobbySetupRequestedSignal());
         sceneService.LoadSceneWithLoading(ScenesEnum.Lobby);
     }
+
     public void OnQuitCuttonClicked()
     {
         sceneService.QuitGame();
