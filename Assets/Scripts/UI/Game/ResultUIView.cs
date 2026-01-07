@@ -6,9 +6,9 @@ using Zenject;
 public class ResultUIView : MonoBehaviour
 {
     [Inject] private SignalBus signalBus;
+    [Inject] private SceneService sceneService;
 
     [SerializeField] private TMP_Text winnerName;
-    [SerializeField] private Button nextButton;
 
     public void SetVisibility(bool isVisible)
     {
@@ -25,5 +25,11 @@ public class ResultUIView : MonoBehaviour
     {
         SetVisibility(false);
         signalBus.Fire(new NextRoundRequestSignal());
+    }
+
+    public void MainMenuButtonPressed()
+    {
+        SetVisibility(false);
+        sceneService.LoadSceneWithLoading(ScenesEnum.MainMenu);
     }
 }

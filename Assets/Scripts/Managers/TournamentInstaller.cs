@@ -95,6 +95,15 @@ public class TournamentInstaller : IInitializable, IDisposable
         }
     }
 
+
+    /*
+    Developer's Note:
+    If you've really looked into this far, you must be curious about the project. First of all, thank you for your interest. 
+    I know this two methods (Method_A and Method_B) and flow could be coded better, but I got bored and had to focus on other projects. 
+    That's why I left it like this. If you have a better solution, feel free to share it, I'll definitely be interested.
+    */
+
+    //Method_A
     private void AddPlayerToNextRound(RoundCompletedSignal signal)
     {
         participants.Add(signal.Player);
@@ -109,6 +118,7 @@ public class TournamentInstaller : IInitializable, IDisposable
         signalBus.Fire(new TournamentProgressedSignal(signal.Player.Name));
     }
 
+    //Method_B
     private void EvaluateTournamentProgress()
     {
         if (byeParticipants.Count > 0)

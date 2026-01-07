@@ -11,8 +11,6 @@ public class PreparationUIView : MonoBehaviour
     [SerializeField] private TMP_Text playerOneText;
     [SerializeField] private TMP_Text playerTwoText;
 
-    [SerializeField] private Button startButton;
-
     private void OnEnable()
     {
         SetScreen(tournamentInstaller.ShowNextMatch());
