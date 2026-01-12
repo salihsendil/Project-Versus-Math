@@ -6,6 +6,8 @@ using Zenject;
 public class TournamentEndUIView : MonoBehaviour
 {
     [Inject] private SceneService sceneService;
+    [Inject] private SoundDataSO soundData;
+    [Inject] private AudioService audioService;
 
     [SerializeField] private TMP_Text playerName;
     [SerializeField] private Button mainMenuButton;
@@ -20,9 +22,10 @@ public class TournamentEndUIView : MonoBehaviour
         playerName.text = winner;
     }
 
-    public void OnMainMenuButtonPressed()
+    public async void OnMainMenuButtonPressed()
     {
-        sceneService.LoadSceneWithLoading(ScenesEnum.MainMenu);
+        audioService.PlaySfx(soundData.buttonClick);
+        await sceneService.LoadSceneWithLoading(ScenesEnum.MainMenu);
     }
 
 }

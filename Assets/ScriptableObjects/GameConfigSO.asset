@@ -15,8 +15,8 @@ MonoBehaviour:
   TournamentSize: 2
   MinNumberLimit: 0
   MaxNumberLimit: 10
-  QuestionCountPerRound: 2
+  QuestionCountPerRound: 1
   HasAllowedAddition: 1
-  HasAllowedSubtraction: 0
-  HasAllowedMultiplication: 0
-  HasAllowedDivision: 0
+  HasAllowedSubtraction: 1
+  HasAllowedMultiplication: 1
+  HasAllowedDivision: 1

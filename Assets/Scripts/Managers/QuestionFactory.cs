@@ -73,7 +73,7 @@ public class QuestionFactory : IInitializable, IDisposable
                 a = UnityEngine.Random.Range(min, max);
                 b = UnityEngine.Random.Range(min, max);
                 correct = a * b;
-                question = a + " * " + b + " = ?";
+                question = a + " x " + b + " = ?";
                 break;
 
             case OperationTypes.Division:

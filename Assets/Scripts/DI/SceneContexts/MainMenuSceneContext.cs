@@ -1,5 +1,3 @@
-using System;
-using UnityEngine;
 using Zenject;
 
 public class MainMenuSceneContext : MonoInstaller
@@ -11,6 +9,5 @@ public class MainMenuSceneContext : MonoInstaller
 
     private void SignalBusBindings()
     {
-        Container.DeclareSignal<OperationsSelectionChangedSignal>();
     }
 }

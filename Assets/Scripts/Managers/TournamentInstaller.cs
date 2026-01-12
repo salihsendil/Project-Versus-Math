@@ -47,7 +47,7 @@ public class TournamentInstaller : IInitializable, IDisposable
 
         int tournamentSize = gameConfigSO.TournamentSize;
 
-        HelperUtilities.Shuffle(participantSO.DefaultNames);
+        //HelperUtilities.Shuffle(participantSO.DefaultNames);
 
         for (int i = 0; i < tournamentSize; i++)
         {

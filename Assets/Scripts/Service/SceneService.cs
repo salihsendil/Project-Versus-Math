@@ -23,39 +23,39 @@ public class SceneService : MonoBehaviour, IInitializable
         loadingCanvasGroup.blocksRaycasts = false;
     }
 
-    public async void LoadSceneWithLoading(ScenesEnum sceneName, float duration = 1f)
-    {
-        loadingCanvasGroup.gameObject.SetActive(true);
-        await loadingCanvasGroup.DOFade(1, 0.5f).AsyncWaitForCompletion();
-
-        var op = SceneManager.LoadSceneAsync(sceneName.ToString());
-        op.allowSceneActivation = false;
-
-        await Task.Delay((int)(duration * 1000));
-
-        while (op.progress < 0.9f) await Task.Yield();
-
-        op.allowSceneActivation = true;
-        while (!op.isDone) await Task.Yield();
-
-        await loadingCanvasGroup.DOFade(0, 0.5f).AsyncWaitForCompletion();
-        loadingCanvasGroup.gameObject.SetActive(false);
-    }
-
-    public async void FadeToTournamentEnd(System.Action onMidFade, float fadeDuration = 2f)
+    public async Task LoadSceneWithLoading(ScenesEnum sceneName, float duration = 2f)
     {
         loadingCanvasGroup.gameObject.SetActive(true);
         loadingCanvasGroup.blocksRaycasts = true;
 
-        await loadingCanvasGroup
-            .DOFade(1f, fadeDuration)
-            .AsyncWaitForCompletion();
+        await loadingCanvasGroup.DOFade(1f, 0.5f).AsyncWaitForCompletion();
+
+        var op = SceneManager.LoadSceneAsync(sceneName.ToString());
+        op.allowSceneActivation = false;
+
+        var delayTask = Task.Delay((int)(duration * 1000));
+
+        while (op.progress < 0.9f) await Task.Yield();
+        await delayTask;
+
+        op.allowSceneActivation = true;
+        while (!op.isDone) await Task.Yield();
+
+        await loadingCanvasGroup.DOFade(0f, 0.5f).AsyncWaitForCompletion();
+        loadingCanvasGroup.blocksRaycasts = false;
+        loadingCanvasGroup.gameObject.SetActive(false);
+    }
+
+    public async Task FadeToPanelTransition(System.Action onMidFade, float fadeDuration = 1f)
+    {
+        loadingCanvasGroup.gameObject.SetActive(true);
+        loadingCanvasGroup.blocksRaycasts = true;
+
+        await loadingCanvasGroup.DOFade(1f, fadeDuration).AsyncWaitForCompletion();
 
         onMidFade?.Invoke();
 
-        await loadingCanvasGroup
-            .DOFade(0f, fadeDuration)
-            .AsyncWaitForCompletion();
+        await loadingCanvasGroup.DOFade(0f, fadeDuration).AsyncWaitForCompletion();
 
         loadingCanvasGroup.blocksRaycasts = false;
         loadingCanvasGroup.gameObject.SetActive(false);

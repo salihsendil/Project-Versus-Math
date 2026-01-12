@@ -1,3 +1,4 @@
+using UnityEngine;
 using Zenject;
 
 public class GameSceneContext : MonoInstaller
@@ -14,7 +15,6 @@ public class GameSceneContext : MonoInstaller
         Container.DeclareSignal<RoundDataReadySignal>();
         Container.DeclareSignal<QuestionGeneratedSignal>();
         Container.DeclareSignal<PlayerAnswerSubmitted>();
-        Container.DeclareSignal<AnswerEvaluationResultSignal>();
         Container.DeclareSignal<NextRoundRequestSignal>();
     }
 

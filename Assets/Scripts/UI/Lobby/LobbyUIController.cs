@@ -9,6 +9,8 @@ public class LobbyUIController : MonoBehaviour
     [Inject] private TournamentInstaller tournamentInstaller;
     [Inject] private SignalBus signalBus;
     [Inject] private SceneService sceneService;
+    [Inject] private AudioService audioService;
+    [Inject] private SoundDataSO soundData;
 
     [Header("Entries")]
     [SerializeField] private List<PlayerLobbyEntry> entries = new();
@@ -31,15 +33,17 @@ public class LobbyUIController : MonoBehaviour
         }
     }
 
-    public void OnStartButtonClicked()
+    public async void OnStartButtonClicked()
     {
         signalBus.Fire(new TournamentSetupRequestedSignal());
-        sceneService.LoadSceneWithLoading(ScenesEnum.Game);
+        audioService.PlaySfx(soundData.buttonClick);
+        await sceneService.LoadSceneWithLoading(ScenesEnum.Game);
     }
 
-    public void OnMainMenuButtonClicked()
+    public async void OnMainMenuButtonClicked()
     {
-        sceneService.LoadSceneWithLoading(ScenesEnum.MainMenu);
+        audioService.PlaySfx(soundData.buttonClick);
+        await sceneService.LoadSceneWithLoading(ScenesEnum.MainMenu);
     }
 
 }

@@ -66,46 +66,52 @@ public class RoundManager : IInitializable, IDisposable
     {
         signal.Player.HasAnswered = true;
 
-        if (IsAnswerCorrect(signal.Answer))
+        bool isCorrect = IsAnswerCorrect(signal.Answer);
+
+        signalBus.Fire(new AnswerEvaluationResultSignal(signal.Player, signal.Answer, isCorrect));
+
+        if (isCorrect)
         {
             signal.Player.Score++;
+        }
 
-            signalBus.Fire(new AnswerEvaluationResultSignal(signal.Player, signal.Answer, true));
-
-            await Task.Delay(1000);
-
-            var result = CheckRoundStatus();
-
-            if (result.isOver)
+        else
+        {
+            if (!player1.HasAnswered || !player2.HasAnswered)
             {
-                signalBus.Fire(new RoundCompletedSignal(result.winner));
                 return;
             }
 
-            OnGenerateQuestion();
+        }
+
+        await Task.Delay(1000);
+
+        var result = CheckRoundStatus();
+
+        if (result.isOver)
+        {
+            signalBus.Fire(new RoundCompletedSignal(result.winner));
             return;
         }
 
-        signalBus.Fire(new AnswerEvaluationResultSignal(signal.Player, signal.Answer, false));
-
-        if (player1.HasAnswered && player2.HasAnswered)
-        {
-            await Task.Delay(1000);
-
-            OnGenerateQuestion();
-        }
+        OnGenerateQuestion();
     }
 
     private bool IsAnswerCorrect(int answer) => answer == currentQuestion.CorrectAnswer;
 
     private (bool isOver, PlayerRoundData winner) CheckRoundStatus()
     {
-        if (roundQuestionCounter < gameConfigSO.QuestionCountPerRound || player1.Score == player2.Score)
+        if (roundQuestionCounter >= gameConfigSO.QuestionCountPerRound)
         {
-            return (false, null);
-        }
+            if (player1.Score == player2.Score)
+            {
+                return (false, null);
+            }
 
-        PlayerRoundData winner = player1.Score > player2.Score ? player1 : player2;
-        return (true, winner);
+            PlayerRoundData winner = player1.Score > player2.Score ? player1 : player2;
+            return (true, winner);
+
+        }
+        return (false, null);
     }
 }

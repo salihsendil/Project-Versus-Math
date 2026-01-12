@@ -10,6 +10,16 @@ public class GameUIController : MonoBehaviour
     [SerializeField] private GameplayUIView gameplayUI;
     [SerializeField] private ResultUIView resultUI;
     [SerializeField] private TournamentEndUIView tournamentEndUI;
+    [SerializeField] private PopupPanelController popupCanvasGroup;
+
+    private void Awake()
+    {
+        preparationUI.SetVisibility(true);
+        gameplayUI.SetVisibility(false);
+        resultUI.SetVisibility(false);
+        tournamentEndUI.SetVisibility(false);
+        popupCanvasGroup.SetVisibility(false);
+    }
 
     private void OnEnable()
     {
@@ -54,11 +64,14 @@ public class GameUIController : MonoBehaviour
         gameplayUI.FinalizePlayersButtons(signal.Player, signal.Answer, signal.IsCorrect);
     }
 
-    private void OnRoundCompleted(TournamentProgressedSignal signal)
+    private async void OnRoundCompleted(TournamentProgressedSignal signal)
     {
-        gameplayUI.SetVisibility(false);
-        resultUI.SetVisibility(true);
-        resultUI.SetScreen(signal.PlayerName);
+        await sceneService.FadeToPanelTransition(() =>
+        {
+            gameplayUI.SetVisibility(false);
+            tournamentEndUI.SetScreen(signal.PlayerName);
+            resultUI.SetVisibility(true);
+        }, 0.5f);
     }
 
     private void OnNextRoundRequest()
@@ -66,16 +79,20 @@ public class GameUIController : MonoBehaviour
         preparationUI.SetVisibility(true);
     }
 
-    private void OnTournamentCompleted(TournamentCompletedSignal signal)
+    private async void OnTournamentCompleted(TournamentCompletedSignal signal)
     {
-        sceneService.FadeToTournamentEnd(() =>
-        {
-            gameplayUI.SetVisibility(false);
-            resultUI.SetVisibility(false);
+        await sceneService.FadeToPanelTransition(() =>
+         {
+             gameplayUI.SetVisibility(false);
+             resultUI.SetVisibility(false);
 
-            tournamentEndUI.SetScreen(signal.WinnerName);
-            tournamentEndUI.SetVisibility(true);
-        });
+             tournamentEndUI.SetScreen(signal.WinnerName);
+             tournamentEndUI.SetVisibility(true);
+         });
     }
 
+    public void MainMenuButtonPressed()
+    {
+        popupCanvasGroup.SetVisibility(true);
+    }
 }

@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,26 +9,20 @@ public class MainMenuUIController : MonoBehaviour
     [Inject] private SignalBus signalBus;
     [Inject] private GameConfigSO gameConfig;
     [Inject] private SceneService sceneService;
+    [Inject] private SoundDataSO soundData;
+    [Inject] private AudioService audioService;
 
     [Header("Size")]
-    [SerializeField] private TMP_Text sizeText;
-    [SerializeField] private Button sizeRemoveButton;
-    [SerializeField] private Button sizeAddButton;
+    [SerializeField] private TMP_Text tournamentSizeText;
 
     [Header("Question Count")]
     [SerializeField] private TMP_Text questionCountText;
-    [SerializeField] private Button questionCountRemoveButton;
-    [SerializeField] private Button questionCountAddButton;
 
     [Header("MinLimit")]
     [SerializeField] private TMP_Text minLimitText;
-    [SerializeField] private Button minLimitRemoveButton;
-    [SerializeField] private Button minLimitAddButton;
 
     [Header("MaxLimit")]
     [SerializeField] private TMP_Text maxLimitText;
-    [SerializeField] private Button maxLimitRemoveButton;
-    [SerializeField] private Button maxLimitAddButton;
 
     [Header("Operations")]
     [SerializeField] private OperationSelectButton additionToogle;
@@ -40,55 +33,77 @@ public class MainMenuUIController : MonoBehaviour
     public void OnEnable()
     {
         signalBus.Subscribe<OperationsSelectionChangedSignal>(SetOperationSelection);
+        signalBus.Subscribe<OnUIValueChangesButtonSignal>(HandleDataAdjustment);
     }
 
     public void OnDisable()
     {
         signalBus.Unsubscribe<OperationsSelectionChangedSignal>(SetOperationSelection);
+        signalBus.Unsubscribe<OnUIValueChangesButtonSignal>(HandleDataAdjustment);
     }
 
     private void Awake()
     {
-        sizeText.text = gameConfig.TournamentSize.ToString();
+        tournamentSizeText.text = gameConfig.TournamentSize.ToString();
         questionCountText.text = gameConfig.QuestionCountPerRound.ToString();
         minLimitText.text = gameConfig.MinNumberLimit.ToString();
         maxLimitText.text = gameConfig.MaxNumberLimit.ToString();
 
-        additionToogle.SetButtonImage(gameConfig.HasAllowedAddition);
-        subtractionToggle.SetButtonImage(gameConfig.HasAllowedSubtraction);
-        multiplicationToggle.SetButtonImage(gameConfig.HasAllowedMultiplication);
-        divisionToggle.SetButtonImage(gameConfig.HasAllowedDivision);
+        additionToogle.SetButtonVisual(gameConfig.HasAllowedAddition);
+        subtractionToggle.SetButtonVisual(gameConfig.HasAllowedSubtraction);
+        multiplicationToggle.SetButtonVisual(gameConfig.HasAllowedMultiplication);
+        divisionToggle.SetButtonVisual(gameConfig.HasAllowedDivision);
     }
 
-
-    public void ChangeSetTournamentSize(int value)
+    private void HandleDataAdjustment(OnUIValueChangesButtonSignal signal)
     {
-        gameConfig.TournamentSize += value;
-        gameConfig.TournamentSize = Mathf.Clamp(gameConfig.TournamentSize, 2, 50);
-        sizeText.text = gameConfig.TournamentSize.ToString();
+        switch (signal.ButtonType)
+        {
+            case UIButtonDataType.QuestionCountSetter:
+                SetQuestionCount(signal.Value);
+                break;
+            case UIButtonDataType.TournamentSizeSetter:
+                SetTournamentSize(signal.Value);
+                break;
+            case UIButtonDataType.MinLimitSetter:
+                SetLimits(0, signal.Value);
+                break;
+            case UIButtonDataType.MaxLimitSetter:
+                SetLimits(1, signal.Value);
+                break;
+            default:
+                break;
+        }
+        audioService.PlaySfx(soundData.buttonClick, 1f);
     }
 
-    public void ChangeSetQuestionCount(int value)
+    private void SetQuestionCount(int value)
     {
         gameConfig.QuestionCountPerRound += value;
         gameConfig.QuestionCountPerRound = Mathf.Clamp(gameConfig.QuestionCountPerRound, 1, 20);
         questionCountText.text = gameConfig.QuestionCountPerRound.ToString();
     }
 
-    public void SetMinLimit(int value) => ChangeSetLimit(0, value);
-    public void SetMaxLimit(int value) => ChangeSetLimit(1, value);
-    private void ChangeSetLimit(int id, int value)
+    private void SetTournamentSize(int value)
+    {
+        gameConfig.TournamentSize += value;
+        gameConfig.TournamentSize = Mathf.Clamp(gameConfig.TournamentSize, 2, 64);
+        tournamentSizeText.text = gameConfig.TournamentSize.ToString();
+    }
+
+    private void SetLimits(int id, int value)
     {
         if (id == 0)
         {
             gameConfig.MinNumberLimit += value;
-            gameConfig.MinNumberLimit = Mathf.Clamp(gameConfig.MinNumberLimit, -100, gameConfig.MaxNumberLimit - 1);
+            gameConfig.MinNumberLimit = Mathf.Clamp(gameConfig.MinNumberLimit, -100, gameConfig.MaxNumberLimit - 3);
             minLimitText.text = gameConfig.MinNumberLimit.ToString();
         }
 
         else if (id == 1)
         {
             gameConfig.MaxNumberLimit += value;
+            gameConfig.MaxNumberLimit = Mathf.Clamp(gameConfig.MaxNumberLimit, gameConfig.MinNumberLimit + 3, 100);
 
             if (gameConfig.MaxNumberLimit <= gameConfig.MinNumberLimit)
             {
@@ -99,7 +114,6 @@ public class MainMenuUIController : MonoBehaviour
             maxLimitText.text = gameConfig.MaxNumberLimit.ToString();
         }
     }
-
 
     private int GetAllowedOperationCount()
     {
@@ -123,39 +137,41 @@ public class MainMenuUIController : MonoBehaviour
     }
     public void SetOperationSelection(OperationsSelectionChangedSignal signal)
     {
-        if (!signal.isAllowed && GetAllowedOperationCount() <= 1)
+        if (!signal.IsAllowed && GetAllowedOperationCount() <= 1)
         {
-            GetToggleByOperation(signal.operation).SetButtonImage(true);
+            GetToggleByOperation(signal.Operation).SetButtonVisual(true);
             return;
         }
 
-        switch (signal.operation)
+        switch (signal.Operation)
         {
             case OperationTypes.Addition:
-                gameConfig.HasAllowedAddition = signal.isAllowed;
+                gameConfig.HasAllowedAddition = signal.IsAllowed;
                 break;
             case OperationTypes.Subtraction:
-                gameConfig.HasAllowedSubtraction = signal.isAllowed;
+                gameConfig.HasAllowedSubtraction = signal.IsAllowed;
                 break;
             case OperationTypes.Multiplication:
-                gameConfig.HasAllowedMultiplication = signal.isAllowed;
+                gameConfig.HasAllowedMultiplication = signal.IsAllowed;
                 break;
             case OperationTypes.Division:
-                gameConfig.HasAllowedDivision = signal.isAllowed;
+                gameConfig.HasAllowedDivision = signal.IsAllowed;
                 break;
             default:
                 break;
         }
     }
 
-    public void OnStartButtonClicked()
+    public async void OnStartButtonClicked()
     {
+        audioService.PlaySfx(soundData.buttonClick);
         signalBus.Fire(new LobbySetupRequestedSignal());
-        sceneService.LoadSceneWithLoading(ScenesEnum.Lobby);
+        await sceneService.LoadSceneWithLoading(ScenesEnum.Lobby);
     }
 
     public void OnQuitCuttonClicked()
     {
+        audioService.PlaySfx(soundData.buttonClick);
         sceneService.QuitGame();
     }
 }

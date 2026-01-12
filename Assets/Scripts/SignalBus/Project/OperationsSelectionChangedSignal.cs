@@ -1,11 +1,10 @@
 ﻿public class OperationsSelectionChangedSignal {
-
-    public OperationTypes operation;
-    public bool isAllowed;
+    public OperationTypes Operation;
+    public bool IsAllowed;
 
     public OperationsSelectionChangedSignal(OperationTypes operation, bool isAllowed)
     {
-        this.operation = operation;
-        this.isAllowed = isAllowed;
+        Operation = operation;
+        IsAllowed = isAllowed;
     }
 }
