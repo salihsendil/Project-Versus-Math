@@ -5,7 +5,7 @@ Matematik Arenası, Unity ile geliştirilmiş, tarayıcı üzerinden oynanabilen
 
 🚀 **Hemen Oyna:** [oyundersligi.com](https://oyundersligi.com/)
 
-## 🛠️ Kurulum ve Geliştirme
+## 🛠️ Geliştirme
 Bu proje WebGL platformu için **_DOKUNMATİK EKRANI_** olan cihazlara yönelik optimize edilmiştir.
 
 ## ⚖️ Lisans (License)
@@ -46,7 +46,7 @@ Math Arena is an engaging and educational math game developed with Unity, playab
 
 🚀 **Play Now:** [oyundersligi.com](https://oyundersligi.com/)
 
-## 🛠️ Installation and Development
+## 🛠️ Development
 This project has been optimized for devices with a **_TOUCHSCREEN_** for the WebGL platform.
 
 ## ⚖️ License
