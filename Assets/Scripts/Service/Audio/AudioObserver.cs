@@ -10,8 +10,6 @@ public class AudioObserver : IInitializable, IDisposable
 
     public void Initialize()
     {
-        audioService.PlayMusic(soundData.backgroundMusic);
-
         signalBus.Subscribe<OperationsSelectionChangedSignal>(OnOperationSelectionChanged);
         signalBus.Subscribe<LobbySetupRequestedSignal>(OnLobbySetupRequested);
         signalBus.Subscribe<AnswerEvaluationResultSignal>(OnAnswerEvaluationResultSignal);

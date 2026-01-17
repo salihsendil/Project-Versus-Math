@@ -3,6 +3,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New SoundDataSO", menuName = "Scriptable Objects/New SoundDataSO")]
 public class SoundDataSO : ScriptableObject
 {
+    [Header("User Preferences")]
+    public bool isSoundOn;
+    public float defaultSfxVolume = 0.7f;
+    public float defaultMusicVolume = 0.6f;
+    public Sprite soundOnSprite;
+    public Sprite soundOffSprite;
+
     [Header("Music")]
     public AudioClip backgroundMusic;
     

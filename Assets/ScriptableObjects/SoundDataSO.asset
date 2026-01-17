@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce5321dcba30b847b174cf938237a6a, type: 3}
   m_Name: SoundDataSO
   m_EditorClassIdentifier: 
+  isSoundOn: 1
+  defaultSfxVolume: 0.4
+  defaultMusicVolume: 0.12
+  soundOnSprite: {fileID: -213356348, guid: 156ec492e516ccb4099add479601d65e, type: 3}
+  soundOffSprite: {fileID: 1897002124, guid: 156ec492e516ccb4099add479601d65e, type: 3}
   backgroundMusic: {fileID: 8300000, guid: 546175d589b5995408fed1e13ff491d4, type: 3}
   correctAnswer: {fileID: 8300000, guid: 0f4c698503913d643a760951ecc1bf8a, type: 3}
-  wrongAnswer: {fileID: 8300000, guid: 1159c3e1e75afba4fb1d26abeca5b05b, type: 3}
+  wrongAnswer: {fileID: 8300000, guid: b9077165d13fa174b9de4c1a687dec44, type: 3}
   buttonClick: {fileID: 8300000, guid: cec008df0c6a90b4aa5fa6c4ac975e50, type: 3}
   buttonClickPositive: {fileID: 8300000, guid: 2e6ddba9574aa3a4ebbc51f989e18008, type: 3}
   buttonClickNegative: {fileID: 8300000, guid: 6936025ced0510e4bb974c0d8623c450, type: 3}

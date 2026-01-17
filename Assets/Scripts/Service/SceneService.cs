@@ -4,7 +4,6 @@ using DG.Tweening;
 using System.Threading.Tasks;
 using Zenject;
 
-
 public class SceneService : MonoBehaviour, IInitializable
 {
     [Inject] private CanvasGroup loadingCanvasGroup;
@@ -33,15 +32,47 @@ public class SceneService : MonoBehaviour, IInitializable
         var op = SceneManager.LoadSceneAsync(sceneName.ToString());
         op.allowSceneActivation = false;
 
-        var delayTask = Task.Delay((int)(duration * 1000));
+        float startTime = Time.time;
 
-        while (op.progress < 0.9f) await Task.Yield();
-        await delayTask;
+#if UNITY_WEBGL && !UNITY_EDITOR
+        // WebGL: Ana thread'i canlý tutmak için frame bazlý bekleme
+        while (op.progress < 0.9f)
+        {
+            await Task.Yield();
+        }
+#else
+        while (op.progress < 0.9f)
+        {
+            await Task.Delay(100);
+        }
+#endif
+
+        float remainingTime = (startTime + duration) - Time.time;
+        if (remainingTime > 0)
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            float timer = 0;
+            while (timer < remainingTime)
+            {
+                timer += Time.deltaTime;
+                await Task.Yield();
+            }
+#else
+            await Task.Delay((int)(remainingTime * 1000));
+#endif
+        }
 
         op.allowSceneActivation = true;
-        while (!op.isDone) await Task.Yield();
+
+        while (!op.isDone)
+        {
+            await Task.Yield();
+        }
+
+        await Task.Yield();
 
         await loadingCanvasGroup.DOFade(0f, 0.5f).AsyncWaitForCompletion();
+
         loadingCanvasGroup.blocksRaycasts = false;
         loadingCanvasGroup.gameObject.SetActive(false);
     }
@@ -63,6 +94,12 @@ public class SceneService : MonoBehaviour, IInitializable
 
     public void QuitGame()
     {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#elif UNITY_WEBGL
+        if (Screen.fullScreen) { Screen.fullScreen = false; }
+#else
         Application.Quit();
+#endif
     }
 }

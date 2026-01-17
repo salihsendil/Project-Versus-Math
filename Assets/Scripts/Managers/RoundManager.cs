@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using UnityEngine;
 using Zenject;
 
 public class PlayerRoundData
@@ -84,7 +85,17 @@ public class RoundManager : IInitializable, IDisposable
 
         }
 
+#if UNITY_WEBGL && !UNITY_EDITOR
+        float timer = 0;
+        float targetDuration = 1f;
+        while (timer < targetDuration)
+        {
+            timer += Time.deltaTime;
+            await Task.Yield();
+        }
+#else
         await Task.Delay(1000);
+#endif  
 
         var result = CheckRoundStatus();
 

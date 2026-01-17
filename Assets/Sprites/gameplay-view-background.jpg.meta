@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9d88525db5c65e545808f73f83afc35b
+guid: 66d8831af2a99f14985a7975f7b5da05
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3338023876793538988
-    second: vecteezy_versus-vs-letters-fight-backgrounds-comics-art-style-design_16268764_0
+      213: 3874657369059986772
+    second: gameplay-view-background_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -84,7 +84,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: Standalone
+    buildTarget: iOS
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -110,6 +110,19 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -123,7 +136,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: iOS
+    buildTarget: WindowsStoreApps
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -139,13 +152,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: vecteezy_versus-vs-letters-fight-backgrounds-comics-art-style-design_16268764_0
+      name: gameplay-view-background_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 1920
-        height: 1097
+        height: 1080
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +167,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ca91d04c70b035e20800000000000000
-      internalID: 3338023876793538988
+      spriteID: 45d8b2d295c85c530800000000000000
+      internalID: 3874657369059986772
       vertices: []
       indices: 
       edges: []
@@ -164,7 +177,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -174,7 +187,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      vecteezy_versus-vs-letters-fight-backgrounds-comics-art-style-design_16268764_0: 3338023876793538988
+      gameplay-view-background_0: 3874657369059986772
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

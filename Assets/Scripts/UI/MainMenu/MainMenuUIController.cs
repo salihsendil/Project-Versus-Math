@@ -74,7 +74,7 @@ public class MainMenuUIController : MonoBehaviour
             default:
                 break;
         }
-        audioService.PlaySfx(soundData.buttonClick, 1f);
+        audioService.PlaySfx(soundData.buttonClick);
     }
 
     private void SetQuestionCount(int value)
@@ -96,14 +96,14 @@ public class MainMenuUIController : MonoBehaviour
         if (id == 0)
         {
             gameConfig.MinNumberLimit += value;
-            gameConfig.MinNumberLimit = Mathf.Clamp(gameConfig.MinNumberLimit, -100, gameConfig.MaxNumberLimit - 3);
+            gameConfig.MinNumberLimit = Mathf.Clamp(gameConfig.MinNumberLimit, -99, gameConfig.MaxNumberLimit - 3);
             minLimitText.text = gameConfig.MinNumberLimit.ToString();
         }
 
         else if (id == 1)
         {
             gameConfig.MaxNumberLimit += value;
-            gameConfig.MaxNumberLimit = Mathf.Clamp(gameConfig.MaxNumberLimit, gameConfig.MinNumberLimit + 3, 100);
+            gameConfig.MaxNumberLimit = Mathf.Clamp(gameConfig.MaxNumberLimit, gameConfig.MinNumberLimit + 3, 99);
 
             if (gameConfig.MaxNumberLimit <= gameConfig.MinNumberLimit)
             {
