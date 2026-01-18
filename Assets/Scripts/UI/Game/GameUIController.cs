@@ -69,7 +69,7 @@ public class GameUIController : MonoBehaviour
         await sceneService.FadeToPanelTransition(() =>
         {
             gameplayUI.SetVisibility(false);
-            tournamentEndUI.SetScreen(signal.PlayerName);
+            resultUI.SetScreen(signal.PlayerName);
             resultUI.SetVisibility(true);
         }, 0.5f);
     }
