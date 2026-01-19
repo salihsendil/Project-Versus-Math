@@ -15,8 +15,8 @@ MonoBehaviour:
   isSoundOn: 1
   defaultSfxVolume: 0.4
   defaultMusicVolume: 0.12
-  soundOnSprite: {fileID: -213356348, guid: 156ec492e516ccb4099add479601d65e, type: 3}
-  soundOffSprite: {fileID: 1897002124, guid: 156ec492e516ccb4099add479601d65e, type: 3}
+  soundOnSprite: {fileID: -1468595726, guid: cc97af33c9868e64f9020c783892193e, type: 3}
+  soundOffSprite: {fileID: 147272769721610167, guid: cc97af33c9868e64f9020c783892193e, type: 3}
   backgroundMusic: {fileID: 8300000, guid: 546175d589b5995408fed1e13ff491d4, type: 3}
   correctAnswer: {fileID: 8300000, guid: 0f4c698503913d643a760951ecc1bf8a, type: 3}
   wrongAnswer: {fileID: 8300000, guid: b9077165d13fa174b9de4c1a687dec44, type: 3}
